@@ -263,7 +263,23 @@ function ws_ls_meta_fields_for_entry_display( $entry_id ) {
 	    $filter_by_id       = ( false === empty( $arguments[ 'custom-field-slugs' ] ) );
 	    $filter_by_group    = ( false === empty( $arguments[ 'custom-field-groups' ] ) );
 
+        $group_id = null;
+        $groups = ws_ls_meta_fields_groups(true);
+        if ( 1 == count($groups) ) {
+            // If there is only one, then it's the "none" group, no custom groups have been added
+            $groups = [];
+        }
+        else {
+            $groups = array_column($groups, null, 'id');
+        }
+
         foreach ( ws_ls_meta_fields_enabled() as $field ) {
+            
+            if ( count( $groups ) && ( $group_id !== $field[ 'group_id' ] ) ) {
+                $group_id = $field[ 'group_id' ];
+                // get group name and show title
+                $html .= sprintf( '<div class="ws-ls-meta-field-group-name">%s</div>', $groups[ $group_id ][ 'name' ] );
+            }
 
 	        $field[ 'field_name' ] = stripslashes( $field[ 'field_name' ] );
 
