@@ -232,7 +232,7 @@ function ws_ls_meta_fields( $exclude_system = true, $ignore_cache = false ) {
         $sql .= ' Where `system` = 0';
     }
 
-    $sql .= ' order by sort, field_name asc';
+    $sql .= ' order by group_id, sort, field_name asc';
 
     $data = $wpdb->get_results( $sql , ARRAY_A );
 
